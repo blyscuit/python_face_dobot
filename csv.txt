@@ -1,0 +1,10 @@
+att_faces/s34/7.pgm;0
+att_faces/s34/6.pgm;0
+att_faces/s34/4.pgm;0
+att_faces/s34/5.pgm;0
+att_faces/s34/1.pgm;0
+att_faces/s34/2.pgm;0
+att_faces/s34/3.pgm;0
+att_faces/s34/8.pgm;0
+att_faces/s34/9.pgm;0
+att_faces/s34/10.pgm;0
