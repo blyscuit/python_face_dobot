@@ -1,0 +1,26 @@
+<burger name="hamburger">
+    <layer>bread</layer>
+    <layer>lettuce</layer>
+    <layer>beef</layer>
+    <layer>bread</layer>
+</burger>
+<burger name="cheeseburger">
+    <layer>bread</layer>
+    <layer>lettuce</layer>
+    <layer>cheese</layer>
+    <layer>beef</layer>
+    <layer>bread</layer>
+</burger>
+<burger name="baconburger">
+    <layer>bread</layer>
+    <layer>bacon</layer>
+    <layer>cheese</layer>
+    <layer>beef</layer>
+    <layer>bread</layer>
+</burger>
+<burger name="sweetburger">
+    <layer>bread</layer>
+    <layer>candy</layer>
+    <layer>cake</layer>
+    <layer>bread</layer>
+</burger>
