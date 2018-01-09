@@ -24,9 +24,9 @@ class Ingredient:
     lettuce = 7
 class Burger:
     hamburger = dotdict({"ingredients":[Ingredient.bread, Ingredient.lettuce, Ingredient.beef, Ingredient.bread], "name":"hamburger", "value":0, "done":False})
-    cheeseburger = dotdict({"ingredients":[Ingredient.bread, Ingredient.lettuce, Ingredient.cheese, Ingredient.beef, Ingredient.bread], "name":"hamburger", "value":1, "done":False})
-    baconburger = dotdict({"ingredients":[Ingredient.bread, Ingredient.bacon, Ingredient.cheese, Ingredient.beef, Ingredient.bread], "name":"hamburger", "value":2, "done":False})
-    sweetburger = dotdict({"ingredients":[Ingredient.bread, Ingredient.candy, Ingredient.cake, Ingredient.bread], "name":"hamburger", "value":3, "done":False})
+    cheeseburger = dotdict({"ingredients":[Ingredient.bread, Ingredient.lettuce, Ingredient.cheese, Ingredient.beef, Ingredient.bread], "name":"cheeseburger", "value":1, "done":False})
+    baconburger = dotdict({"ingredients":[Ingredient.bread, Ingredient.bacon, Ingredient.cheese, Ingredient.beef, Ingredient.bread], "name":"baconburger", "value":2, "done":False})
+    sweetburger = dotdict({"ingredients":[Ingredient.bread, Ingredient.candy, Ingredient.cake, Ingredient.bread], "name":"sweetburger", "value":3, "done":False})
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
 #   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
@@ -66,29 +66,41 @@ burgerQuere = []
 def do_stuff(q):
     while True:
         try:
-            if q.get()[0] == 1:
-                do_robot(q)
+            next = q.get()
+            print(next[0])
+            if next[0] == 0:
+                do_robot(q, next)
             
-            elif q.get()[2] == 1:
-                do_robotserve(q)
+            elif next[0] == 1:
+                do_robotserve(q, next)
             else:
                 do_bang(q)
         except:
             print("BOMB")
             q.task_done()
     
-def do_robot(q):
+def do_robot(q, next):
     global burgerQuere
+    print("robot making " + (next[1].name))
+    time.sleep(5)
     for burger in burgerQuere:
-        if burger.done != 1:
+        if burger.done == 0:
             burger.done = 1
             break
 #	while True:
-    print("robot making %s", (q.get()[1].name,))
     q.task_done()
     print("robot Done")
+   
+def do_robotserve(q, next):
+    global burgerQuere
+#	while True:
+    print("robot serving " + (next[1].name))
+    time.sleep(3)
+    q.task_done()
+    print("robot Done")
+    time.sleep(1)
+    
 def do_bang(q):
-    print("robot serving %s", (q.get()[1].name,))
     print("Bang!!")
     q.task_done()
 
@@ -172,7 +184,8 @@ while True:
                 matchIndex = numpy.where(match==min(match)) 
                 name = database_name[matchIndex[0][0]]
                 if burgerQuere[matchIndex[0][0]-1].done == 1:
-                    q.put((1,matchIndex[0][0]-1))
+                    q.put((1,burgerQuere[matchIndex[0][0]-1]))
+                    burgerQuere[matchIndex[0][0]-1].done = 2
             elif min(match) >= 0.53:
 #                new_face_encoding = face_recognition.face_encodings(frame)[0]
             
