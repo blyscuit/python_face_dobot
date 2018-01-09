@@ -12,6 +12,19 @@ class dotdict(dict):
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
+class MyPriorityQueue(queue.PriorityQueue):
+    def __init__(self):
+        queue.PriorityQueue.__init__(self)
+        self.counter = 0
+
+    def put(self, item, priority):
+        queue.PriorityQueue.put(self, (priority, self.counter, item))
+        self.counter += 1
+
+    def get(self, *args, **kwargs):
+        _, _, item = queue.PriorityQueue.get(self, *args, **kwargs)
+        return item
+
 
 
 class Ingredient:
@@ -104,7 +117,7 @@ def do_bang(q):
     print("Bang!!")
     q.task_done()
 
-q = queue.Queue(maxsize=0)
+q = MyPriorityQueue()
 worker = Thread(target=do_stuff, args=(q,))
 worker.setDaemon(True)
 worker.start()
@@ -184,7 +197,7 @@ while True:
                 matchIndex = numpy.where(match==min(match)) 
                 name = database_name[matchIndex[0][0]]
                 if burgerQuere[matchIndex[0][0]-1].done == 1:
-                    q.put((1,burgerQuere[matchIndex[0][0]-1]))
+                    q.put((1,burgerQuere[matchIndex[0][0]-1]),0)
                     burgerQuere[matchIndex[0][0]-1].done = 2
             elif min(match) >= 0.53:
 #                new_face_encoding = face_recognition.face_encodings(frame)[0]
@@ -193,7 +206,7 @@ while True:
                     database_face.append(face_encoding)
                     database_name.append('%s Person %d' % (currentBurger.name,faceID,))
                     faceID += 1
-                    q.put((0,currentBurger))
+                    q.put((0,currentBurger),1)
                     burgerQuere.append(currentBurger)
                     currentBurger = None
 #                not in database
