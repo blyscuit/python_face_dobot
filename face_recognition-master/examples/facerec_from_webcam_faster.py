@@ -48,10 +48,10 @@ while True:
             match = face_recognition.face_distance(database_face, face_encoding)
             name = "Unknown"
 #            print(match)
-            if min(match) <= 0.4:
+            if min(match) <= 0.38: #or 0.40
                 matchIndex = numpy.where(match==min(match)) 
                 name = database_name[matchIndex[0][0]]
-            elif min(match) >= 0.55:
+            elif min(match) >= 0.505:
 #                new_face_encoding = face_recognition.face_encodings(frame)[0]
                 database_face.append(face_encoding)
                 database_name.append('Person %d' % (faceID,))
