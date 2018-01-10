@@ -1,4 +1,5 @@
 import time
+from CoordTransformer import coordclass
 from glob import glob
 from pydobot import Dobot
 
@@ -10,7 +11,7 @@ class dbot:
     z_release = -55.0
     #z_mid = 0.0
 
-    hide = [135.0, 0.0, 0.0]
+    hide_pos = [135.0, 0.0, 0.0]
     tray = [0.0, 250.0, z_release]
 
     def __init__(self):
@@ -19,8 +20,10 @@ class dbot:
         time.sleep(2)
 
     def hide(self):
-        self.device.go(*dbot.hide)
+        print('Hiding start')
+        self.device.go(*dbot.hide_pos)
         time.sleep(5)
+        print('Hiding finished')
 
     def pickUp(self, x, y):
         self.device.go(x, y, dbot.z_min)
@@ -39,19 +42,31 @@ class dbot:
         time.sleep(5)
 
     def goCalib(self,x ,y):
+        print('Calib start')
         self.device.go(x,y,0)
         time.sleep(5)
+        print('Hiding finish')
     
     def setSpeed(self, speed):
         self.device.speed(speed)
     
     def closeDevice(self):
+        print('Closing start')
         self.device.close()
         time.sleep(0.5)
+        print('Closing finish')
     #will have to 
     """device.go(*hide)"""
 
     #time.sleep(2)
     #device.go(250.0, 0.0, 50.0)
+
+d = dbot()
+cd = coordclass(1.5, 206.4, 0.0, 480, 360)
+target = cd.getCoordinates((405, 533))
+d.hide()
+d.goCalib(target[0], target[1])
+d.closeDevice()
+
 
 

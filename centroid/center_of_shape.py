@@ -16,9 +16,10 @@ import time
 
 def cam_scan():
 	
-	im_url = 'http://192.168.0.155:4747/mjpegfeed?960x720'
-	crop_topleft = (80, 260)
-	crop_bottomright = (620, 680)
+	#im_url = 'http://192.168.0.155:4747/mjpegfeed?960x720'
+	im_url = 'CalibImg.jpg'
+	crop_topleft = (320, 0)
+	crop_bottomright = (640, 720)
 
 	boundaries = [
 		(([190, 140, 70], [255, 230, 150]), "blue"),
@@ -31,23 +32,25 @@ def cam_scan():
 		
 	]
 
+	'''
 	camera = cv2.VideoCapture(im_url)
-	
-	# construct the argument parse and parse the arguments
-	#ap = argparse.ArgumentParser()
-	#ap.add_argument("-i", "--image", required=True, help="path to the input image")
-	#args = vars(ap.parse_args())
-
-	# load the image, convert it to grayscale, blur it slightly,
-	# and threshold it
 	_, non_crop_image = camera.read()
 	for i in range(20):
 		_, non_crop_image = camera.read()
+	'''
+	non_crop_image = cv2.imread(im_url)
 	image = non_crop_image[crop_topleft[1]:crop_bottomright[1], crop_topleft[0]:crop_bottomright[0]]
-	#image = cv2.imread(args["image"])
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-	blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-	thresh = cv2.threshold(blurred, 75, 255, cv2.THRESH_BINARY)[1]
+	#blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+	blurred = cv2.bilateralFilter(gray, 9, 150, 150)
+
+	cv2.imshow("Image", blurred)
+	cv2.waitKey(0)
+
+	thresh = cv2.threshold(blurred, 100, 255, cv2.THRESH_BINARY)[1]
+
+	cv2.imshow("Image", thresh)
+	cv2.waitKey(0)
 
 	# find contours in the thresholded image
 	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
@@ -88,8 +91,8 @@ def cam_scan():
 			cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
 			# cv2.circle(image, (cX, cY), 7, (255, 255, 255), -1)
 
-			cv2.circle(non_crop_image, (cX+crop_topleft[0], cY+crop_topleft[1]), 7, (255, 255, 255), -1)
-			cv2.circle(non_crop_image, (int(960/2), int(720/2)), 7, (255,255,0), -1)
+			cv2.circle(image, (cX+crop_topleft[0], cY+crop_topleft[1]), 7, (255, 255, 255), -1)
+			cv2.circle(image, (int(960/2), int(720/2)), 7, (255,255,0), -1)
 		#	cv2.putText(image, "center", (cX - 20, cY - 20),
 		#		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 			
@@ -108,7 +111,7 @@ def cam_scan():
 
 			allItems.append({"center": (cX+crop_topleft[0], cY+crop_topleft[1]), "degree": angle, "color": name})
 			# show the image
-			cv2.imshow("Image", non_crop_image)
+			cv2.imshow("Image", image)
 			cv2.waitKey(0)
 
 	return allItems
