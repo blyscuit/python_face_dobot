@@ -1,6 +1,6 @@
 import math
 import cv2
-class coordclass:
+class CoordTransformer:
     #Assume that the calibration position of objects posted is at (50,CamY),(250,Camy),(CamX,150),(CamX,-150) in real world coords
     #
     """
@@ -50,8 +50,8 @@ class coordclass:
 
         #xCoord = (-1*self.mmPxRate*yScaling*(yPx-self.cenY))+self.camX
         #yCoord = (-1*self.mmPxRate*xScaling*(xPx-self.cenX))+self.camY
-        yCoord = (-1*self.mmPxRate*(xPx-self.cenX))+self.camY
-        xCoord = (-1*self.mmPxRate*(yPx-self.cenY))+self.camX
+        yCoord = (-1*self.mmPxRate*(yPx-self.cenX))+self.camY
+        xCoord = (self.mmPxRate*(xPx-self.cenY))+self.camX
         #find the undistorted terms using the values with the calibration points
         return (xCoord, yCoord)
 
