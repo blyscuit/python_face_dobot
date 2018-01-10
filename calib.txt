@@ -1,0 +1,10 @@
+Center coordinates
+x: 206.4
+y: 0.0 
+
+at center
+
+Pixel to mm
+
+x: 1.5
+y: 1.5
