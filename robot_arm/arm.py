@@ -1,5 +1,5 @@
 import time
-from CoordTransformer import coordclass
+from robot_arm.CoordTransformer import coordClass
 from glob import glob
 from pydobot import Dobot
 
@@ -7,12 +7,12 @@ class dbot:
 
     PORT = 'COM7'
 
-    z_min = -58.0
-    z_release = -55.0
+    z_min = -65.0
+    z_hover = -60.0
     #z_mid = 0.0
 
     hide_pos = [135.0, 0.0, 0.0]
-    tray = [0.0, 250.0, z_release]
+    tray = [0.0, -250.0, z_hover]
 
     def __init__(self):
         self.device = Dobot(port = dbot.PORT)
@@ -26,20 +26,24 @@ class dbot:
         print('Hiding finished')
 
     def pickUp(self, x, y):
-        self.device.go(x, y, dbot.z_min)
+        self.device.go(x, y, 0.0)
         time.sleep(5)
+        self.device.go(x, y, dbot.z_min)
+        time.sleep(3)
         self.device.suck(True)
         time.sleep(1)
         self.device.go(x, y, 0.0)
-        time.sleep(5)
+        time.sleep(3)
     
     def place(self):
-        self.device.go(*dbot.tray)
+        self.device.go(*dbot.tray[:2], z=0.0)
         time.sleep(5)
+        self.device.go(*dbot.tray)
+        time.sleep(3)
         self.device.suck(False)
         time.sleep(1)
         self.device.go(*dbot.tray[:2], z=0.0)
-        time.sleep(5)
+        time.sleep(3)
 
     def goCalib(self,x ,y):
         print('Calib start')
@@ -61,12 +65,14 @@ class dbot:
     #time.sleep(2)
     #device.go(250.0, 0.0, 50.0)
 
+'''
 d = dbot()
-cd = coordclass(1.5, 206.4, 0.0, 480, 360)
+cd = coordClass(1.0 / 1.5, 206.4, 0.0, 360, 480)
 target = cd.getCoordinates((405, 533))
 d.hide()
 d.goCalib(target[0], target[1])
 d.closeDevice()
+'''
 
 
 

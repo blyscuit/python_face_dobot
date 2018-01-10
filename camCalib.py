@@ -1,5 +1,8 @@
 import numpy as np
 import cv2
+import centroid.center_of_shape as cen
+
+#print(cen.cam_scan('http://192.168.0.155:4747/mjpegfeed?960x720'))
 
 '''
 DroidCam
@@ -10,12 +13,14 @@ You can try to open the camera stream with your browser on PC
 '''
 
 cap = cv2.VideoCapture('http://192.168.0.155:4747/mjpegfeed?960x720')
-        
+
+ret, frame = cap.read()
+print(frame.shape)
 
 while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
-
+    
     # Our operations on the frame come here
     #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
