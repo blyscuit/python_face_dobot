@@ -1,11 +1,11 @@
 import math
 import cv2
 class CoordTransformer:
-    #Assume that the calibration position of objects posted is at (50,0),(250,0),(0,200),(0,-200) in real world coords
+    #Assume that the calibration position of objects posted is at (50,CamY),(250,Camy),(CamX,150),(CamX,-150) in real world coords
     """
         mm/px = ration
-        x1 = calibration values px val at W(0,200)
-        x2 = calibration values px val at W(0,-200)
+        x1 = calibration values px val at W(0,150)
+        x2 = calibration values px val at W(0,-150)
         y1 = calibration values px val at W(50,0)
         y2 = calibration values px val at W(250,0)
         camX = x coordinates of the camera relative to world frame
@@ -37,15 +37,15 @@ class CoordTransformer:
 
         realY2 = ((self.camX-250)/(self.mmPxRate))+self.cenY
         realY1 = ((self.camX-50)/(self.mmPxRate))+self.cenY
-        realX1 = ((self.camX-200)/(self.mmPxRate))+self.cenX
-        realX2 = ((self.camX+200)/(self.mmPxRate))+self.cenX
+        realX1 = ((self.camX-150)/(self.mmPxRate))+self.cenX
+        realX2 = ((self.camX+150)/(self.mmPxRate))+self.cenX
         xScaling = ((realX1/self.x1)+(realX2/self.x2))/2.0
         yScaling = ((realY1/self.y1)+(realY2/self.y2))/2.0
 
         
 
-        xCoord = (-1*self.mmPxRate*(yScaling*yPx-self.cenY))+self.camX
-        yCoord = (-1*self.mmPxRate*(xScaling*xPx-self.cenX))+self.camY
+        xCoord = (-1*self.mmPxRate*yScaling*(yPx-self.cenY))+self.camX
+        yCoord = (-1*self.mmPxRate*xScaling*(xPx-self.cenX))+self.camY
 
         #find the undistorted terms using the values with the calibration points
         return (xCoord, yCoord)
