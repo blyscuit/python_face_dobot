@@ -5,7 +5,7 @@ from pydobot import Dobot
 
 class dbot:
 
-    PORT = 'COM7'
+    PORT = 'COM6'
 
     z_min = -65.0
     z_hover = -60.0

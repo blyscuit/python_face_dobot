@@ -50,12 +50,16 @@ class coordClass:
 
         #xCoord = (-1*self.mmPxRate*yScaling*(yPx-self.cenY))+self.camX
         #yCoord = (-1*self.mmPxRate*xScaling*(xPx-self.cenX))+self.camY
-        yCoord = (-1*self.mmPxRate*(yPx-self.cenX))+self.camY
-        xCoord = (self.mmPxRate*(xPx-self.cenY))+self.camX
+        scaling1 = (165-self.camY)/(-1*self.mmPxRate*(79-self.cenY))+self.camY
+        scaling2 = (-146-self.camY)/(-1*self.mmPxRate*(377-self.cenY))+self.camY
+        scaling = (scaling1+scaling2)/2
+        xCoord = scaling*(self.mmPxRate*(xPx-self.cenX))+self.camX
+        yCoord = scaling*(-1*self.mmPxRate*(yPx-self.cenY))+self.camY
         #find the undistorted terms using the values with the calibration points
         return (xCoord, yCoord)
 
     
 
-#ct = CoordTransformer(1.05, 0,0,0,0, 50, 250, 320, 300)
-#print(ct.getCoordinates((200,200)))
+cd = coordClass(1.0 / 1.5, 206.4, 0.0, 320, 240)
+print('upper is: ',cd.getCoordinates((334,79)))
+print('lower is: ',cd.getCoordinates((330,377)))
