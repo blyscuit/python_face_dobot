@@ -9,9 +9,9 @@ from threading import Thread
 import time
 
 burger_def = [
-    {'name': 'RGB Burger', 'number': ['one', '1'], 'ingredients': ['red', 'green', 'blue']},
-    {'name': 'Eco Burger', 'number': ['two', '2'],'ingredients':['pink', 'leaf', 'yellow']},
-    {'name': 'Sweet Burger','number': ['three', '3'],'ingredients':['purple', 'blue', 'purple']}
+    {'name': 'RGB Burger', 'number': ['one', '1'], 'ingredients': ['red', 'green', 'blue'], 'done': 0},
+    {'name': 'Eco Burger', 'number': ['two', '2'],'ingredients':['pink', 'leaf', 'yellow'], 'done': 0},
+    {'name': 'Sweet Burger','number': ['three', '3'],'ingredients':['purple', 'blue', 'purple'], 'done': 0}
 ]
 
 engine = tts.init()
@@ -108,9 +108,9 @@ while True:
             if min(match) <= 0.39: #or 0.40
                 matchIndex = numpy.where(match==min(match)) 
                 name = database_name[matchIndex[0][0]]
-                if burgerQuere[matchIndex[0][0]-1].done == 1:
+                if burgerQuere[matchIndex[0][0]-1]['done'] == 1:
                     q.put((1,burgerQuere[matchIndex[0][0]-1]),0)
-                    burgerQuere[matchIndex[0][0]-1].done = 2
+                    burgerQuere[matchIndex[0][0]-1]['done'] = 2
             elif min(match) >= 0.53:
 #                new_face_encoding = face_recognition.face_encodings(frame)[0]
             
