@@ -59,6 +59,7 @@ class dbot:
             self.device.go(*dbot.tray[:2], z=0.0)
             time.sleep(3)
             print('Place finished')
+            dbot.z_min += 5.0
             dbot.has_obj = False
         else:
             print('No object to place')
