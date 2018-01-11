@@ -6,8 +6,8 @@ from threading import Thread
 import time
 import pyttsx3 as tts
 import speech_recognition as sr
-import 
-    
+import speech_order as speechOrder
+
 class dotdict(dict):
 # """dot.notation access to dictionary attributes"""
     __getattr__ = dict.get
