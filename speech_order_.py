@@ -121,7 +121,7 @@ while True:
                     q.put((0,currentBurger),1)
                     burgerQuere.append(currentBurger)
                     bb.make_burger(currentBurger['ingredients'])
-#                    currentBurger = None
+                    currentBurger = None
 #                not in database
 
             face_names.append(name)

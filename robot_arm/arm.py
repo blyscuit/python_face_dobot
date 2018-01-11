@@ -18,6 +18,8 @@ class dbot:
     tray = [0.0, -250.0, z_hover]
 
     def __init__(self):
+#        available_ports = glob('/dev/cu*usb*')
+#        self.device = Dobot(port = available_ports[0])
         self.device = Dobot(port = dbot.PORT)
         self.setSpeed(10)
         time.sleep(2)
