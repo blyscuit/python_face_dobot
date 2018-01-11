@@ -1,11 +1,14 @@
 import time
+import math
 from robot_arm.CoordTransformer import coordClass
 from glob import glob
 from pydobot import Dobot
 
 class dbot:
 
-    PORT = 'COM6'
+    has_obj = False
+
+    PORT = 'COM7'
 
     z_min = -65.0
     z_hover = -60.0
@@ -26,24 +29,58 @@ class dbot:
         print('Hiding finished')
 
     def pickUp(self, x, y):
+        print('PickUp start')
         self.device.go(x, y, 0.0)
         time.sleep(5)
+        print('PickUp lower')
         self.device.go(x, y, dbot.z_min)
         time.sleep(3)
+        print('PickUp suck')
         self.device.suck(True)
         time.sleep(1)
+        print('PickUp lift')
         self.device.go(x, y, 0.0)
         time.sleep(3)
+        print('PickUp finished')
+        dbot.has_obj = True
     
     def place(self):
-        self.device.go(*dbot.tray[:2], z=0.0)
+        if dbot.has_obj:
+            print('Place start')
+            self.device.go(*dbot.tray[:2], z=0.0)
+            time.sleep(5)
+            print('Place lower')
+            self.device.go(*dbot.tray)
+            time.sleep(3)
+            print('Place release')
+            self.device.suck(False)
+            time.sleep(1)
+            print('Place raise')
+            self.device.go(*dbot.tray[:2], z=0.0)
+            time.sleep(3)
+            print('Place finished')
+            dbot.has_obj = False
+        else:
+            print('No object to place')
+            time.sleep(1)
+
+    def hide(self):
+        print('Hiding start')
+        self.device.go(*dbot.hide_pos)
         time.sleep(5)
-        self.device.go(*dbot.tray)
+        print('Hiding finished')
+
+    def hover(self, x, y):
+        print('Hover start')
+        self.device.go(x, y, 0.0)
+        time.sleep(5)
+        print('Hover lower')
+        self.device.go(x, y, dbot.z_hover)
         time.sleep(3)
-        self.device.suck(False)
-        time.sleep(1)
-        self.device.go(*dbot.tray[:2], z=0.0)
+        print('Hover lift')
+        self.device.go(x, y, 0.0)
         time.sleep(3)
+        print('Hover finished')
 
     def goCalib(self,x ,y):
         print('Calib start')

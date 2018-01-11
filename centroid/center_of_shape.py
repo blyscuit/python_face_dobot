@@ -19,7 +19,7 @@ def scan(im_url, debug=True):
 	#im_url = 'http://192.168.0.155:4747/mjpegfeed?960x720'
 	#path = os.path.dirname(os.path.abspath(__file__))
 	#im_url = os.path.join(path, '/CalibImg.jpg')
-	print(im_url)
+	#print(im_url)
 	crop_topleft = (320, 0)
 	crop_bottomright = (700, 720)
 
@@ -50,13 +50,13 @@ def scan(im_url, debug=True):
 
 	camera = cv2.VideoCapture(im_url)
 	_, non_crop_image = camera.read()
-	for i in range(100):
+	for i in range(50):
 		_, non_crop_image = camera.read()
 
 
 	#non_crop_image = cv2.imread(im_url)
 
-	print(non_crop_image.shape)
+	#print(non_crop_image.shape)
 
 	image = non_crop_image[crop_topleft[1]:crop_bottomright[1], crop_topleft[0]:crop_bottomright[0]]
 
@@ -88,7 +88,7 @@ def scan(im_url, debug=True):
 	for c in cnts:
 		# compute the center of the contour
 		M = cv2.moments(c)
-		print(M["m00"])
+		#print(M["m00"])
 		if (M["m00"] <= WEIGHTLIMIT):
 			pass
 		else:
@@ -103,14 +103,14 @@ def scan(im_url, debug=True):
 
 			color = image[cY, cX]
 			
-			print(color)
+			#print(color)
 
 			min_d = 500.0
 			name = 'none'
 			
 			for (c_val, c_name) in color_def:
 				d = compare_color(color, c_val)
-				print(c_val)
+				#print(c_val)
 				if d < min_d:
 					min_d = d
 					name = c_name
